@@ -1,16 +1,18 @@
 package db
 
 import (
-	"database/sql"
+	// "database/sql"
+
+	"github.com/jmoiron/sqlx"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
-var DB *sql.DB
+var DB *sqlx.DB
 
 func InitDB() {
 	var err error
-	DB, err = sql.Open("mysql", "root:Jeetu@571@tcp(127.0.0.1:3306)/test1")
+	DB, err = sqlx.Open("mysql", "root:Sutharj@571@tcp(127.0.0.1:3306)/test1")
 
 	if err != nil {
 		panic("Could not connect to database.")
@@ -27,7 +29,7 @@ func createTables() {
 	createUsersTable := `
 	CREATE TABLE IF NOT EXISTS users (
 		id INTEGER PRIMARY KEY AUTO_INCREMENT,
-		email TEXT NOT NULL UNIQUE,
+		email VARCHAR(255) NOT NULL UNIQUE,
 		password TEXT NOT NULL
 	)
 	`

@@ -12,10 +12,19 @@ type Event struct {
 	Description string     `binding:"required"`
 	Location    string     `binding:"required"`
 	DateTime    *time.Time `binding:"required"`
-	UserID      int
+	UserID      int64
 }
 
-func (e Event) Save() error {
+// type Event struct {
+// 	ID          int64      `db:"id" binding:"required"`
+// 	Name        string     `db:"name" binding:"required"`
+// 	Description string     `db:"description" binding:"required"`
+// 	Location    string     `db:"location" binding:"required"`
+// 	DateTime    *time.Time `db:"dateTime" binding:"required"`
+// 	UserID      int        `db:"user_id"`
+// }
+
+func (e *Event) Save() error {
 	query := `
 	INSERT INTO events(name, description, location, dateTime, user_id) 
 	VALUES (?, ?, ?, ?, ?)`
@@ -45,7 +54,7 @@ func GetAllEvents() ([]Event, error) {
 
 	for rows.Next() {
 		var event Event
-		var dateTime []uint8 // Temporary variable to hold dateTime value
+		var dateTime []uint8
 		err := rows.Scan(&event.ID, &event.Name, &event.Description, &event.Location, &dateTime, &event.UserID)
 
 		if err != nil {
@@ -89,7 +98,6 @@ func GetEventById(id int64) (*Event, error) {
 	event.DateTime = &parsedTime
 
 	return &event, nil
-
 }
 
 func (event Event) Update() error {
@@ -111,6 +119,19 @@ func (event Event) Update() error {
 	return err
 }
 
+// with sqlx package
+
+// func (event Event) Update() error {
+// 	query := `
+// 	UPDATE events
+// 	SET name = ?, description = ?, location = ?, dateTime = ?
+// 	WHERE id = ?
+// 	`
+
+// 	_, err := db.DB.Exec(query, event.Name, event.Description, event.Location, event.DateTime, event.ID)
+// 	return err
+// }
+
 func (event Event) Delete() error {
 	query := "DELETE FROM events WHERE id = ?"
 	stmt, err := db.DB.Prepare(query)
@@ -124,3 +145,10 @@ func (event Event) Delete() error {
 	_, err = stmt.Exec(event.ID)
 	return err
 }
+
+// func (event Event) Delete() error {
+// 	query := "DELETE FROM events WHERE id = :id"
+
+// 	_, err := db.DB.NamedExec(query, map[string]interface{}{"id": event.ID})
+// 	return err
+// }
