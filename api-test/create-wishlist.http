@@ -1,0 +1,8 @@
+POST http://localhost:8080/wishlist/1
+content-type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QyQGV4YW1wbGUuY29tIiwiZXhwIjoxNzEyNjY4MTM4LCJ1c2VySWQiOjJ9.anL_zNsHAPPSb5I8J7KHTOUcLrezcFO6rGqXLTO7CaM
+
+{
+    "startDate": "2024-04-01",
+    "endDate": "2024-04-12"
+}

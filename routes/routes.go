@@ -17,6 +17,10 @@ func RegisterRoutes(server *gin.Engine) {
 	authenticated.POST("events/:id/register", registerForEvent)
 	authenticated.DELETE("events/:id/register", cancelRegistration)
 
+	// Wishlist routes
+	server.GET("/wishlist", getWishlists)
+	authenticated.POST("wishlist/:id", createWishlist)
+
 	// server.POST("/events", middlewares.Authenticate, createEvent)
 	// server.PUT("/events/:id", updateEvent)
 	// server.DELETE("/events/:id", deleteEvent)
